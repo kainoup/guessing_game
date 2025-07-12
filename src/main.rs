@@ -5,17 +5,24 @@ fn main() {
     let secret_number = rand::thread_rng().gen_range(1..=100);
     println!("Welcome to the guessing game!");
    println!("__________________________________") ;
+    loop {
     println!("Guess a number from 1 to 100:");
 
     let mut guess = String::new();
 
     io::stdin().read_line(&mut guess).expect("Please use a number");
-    println!("{guess}");
-    let guess:u8 = guess.trim().parse().expect("input not a number");
-    println!("{secret_number}");
+    let guess:u8 = match guess.trim().parse(){
+                Ok(num) => num,
+                Err(_) => continue,
+        };
+
     match guess.cmp(& secret_number){
         Ordering::Less => println!("Too Low guess again! "),
         Ordering::Greater => println!("Too High guess again! "),
-        Ordering::Equal => println!("You win!"),
+        Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
     };
+    }
 }
